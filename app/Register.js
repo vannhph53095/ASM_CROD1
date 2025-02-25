@@ -1,134 +1,167 @@
+import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
 import {
-  Image,
   View,
   Text,
   TextInput,
-  TouchableOpacity,
   StyleSheet,
+  Image,
+  TouchableOpacity,
   Alert,
 } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
 
-const RegisterScreen = () => {
-    const navigation=useNavigation();
+const api = `http://192.168.2.6:3000/users`;
+
+
+const SignUp = () => {
   const [name, setName] = useState('');
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
   const [confirmPassword, setConfirmPassword] = useState('');
   const [error, setError] = useState('');
+  const navigation = useNavigation();
 
-  const handleRegister = () => {
-    if (!name || !email || !password || !confirmPassword) {
-      setError('All fields are required.');
-    } else if (password !== confirmPassword) {
-      setError('Passwords do not match.');
-    } else {
-      setError('');
-      Alert.alert('Success', 'Registered successfully!');
+  const handleSignUp = () => {
+    if (password !== confirmPassword) {
+      setError('Mật khẩu xác nhận không khớp');
+      return;
     }
-  };
 
+    // Tạo người dùng mới
+    const newUser = {
+      name,
+      email,
+      password,
+      role: 'customer', // Có thể thêm phân quyền
+    };
+
+    // Gửi yêu cầu đăng ký
+    fetch(api, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(newUser),
+    })
+      .then((response) => response.json())
+      .then((data) => {
+        if (data) {
+          Alert.alert('Đăng ký thành công');
+          navigation.navigate('Login');
+        }
+      })
+      .catch((error) => {
+        console.error('Error:', error);
+        setError('Đăng ký thất bại, vui lòng thử lại');
+      });
+  };
   return (
     <View style={styles.container}>
+      {/* Logo */}
       <Image
+        source={require('../assets/images/Group 72.png')}
         style={styles.logo}
-        source={require('../assets/images/Group72.png')}
       />
 
-      <Text style={styles.title}>Welcome to Lungo !!</Text>
+      {/* Welcome Text */}
+      <Text style={styles.title}>Welcome to Longo !!</Text>
       <Text style={styles.subtitle}>Register to Continue</Text>
 
+      {/* Input Fields */}
       <TextInput
-        style={styles.input}
         placeholder="Name"
-        placeholderTextColor="#aaa"
+        placeholderTextColor="#ccc"
+        style={styles.input}
         value={name}
         onChangeText={setName}
       />
       <TextInput
-        style={styles.input}
         placeholder="Email"
-        placeholderTextColor="#aaa"
+        placeholderTextColor="#ccc"
+        style={styles.input}
         keyboardType="email-address"
         value={email}
         onChangeText={setEmail}
       />
       <TextInput
-        style={styles.input}
         placeholder="Password"
-        placeholderTextColor="#aaa"
-        secureTextEntry
+        placeholderTextColor="#ccc"
+        style={styles.input}
+        secureTextEntry={true}
         value={password}
         onChangeText={setPassword}
       />
       <TextInput
+        placeholder="Confirm Password"
+        placeholderTextColor="#ccc"
         style={styles.input}
-        placeholder="Re-type password"
-        placeholderTextColor="#aaa"
-        secureTextEntry
+        secureTextEntry={true}
         value={confirmPassword}
         onChangeText={setConfirmPassword}
       />
 
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-      <TouchableOpacity style={styles.button} onPress={handleRegister}>
+      {/* Buttons */}
+      <TouchableOpacity style={styles.signUpButton} onPress={handleSignUp}>
         <Text style={styles.buttonText}>Register</Text>
       </TouchableOpacity>
 
-      <View style={{ marginTop: 20, alignItems: 'center' }}>
-        <Text style={{ color: '#fff' }}>
-          You have an account?{' '}
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Text style={{ color: '#D17842', fontWeight: 'bold' }}>Sign In</Text>
-          </TouchableOpacity>
+      
+
+      {/* Register and Forgot Password */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>
+          You have an account ?{''} Click {''}
+          <Text style={styles.login} onPress={() => navigation.navigate('Login')}>
+             Sign in
+          </Text>
         </Text>
       </View>
     </View>
   );
 };
 
+export default SignUp;
+
 const styles = StyleSheet.create({
-  logo: {
-    alignSelf: 'center',
-    width: 200,
-    height: 200,
-    marginBottom: 20,
-  },
   container: {
     flex: 1,
     backgroundColor: '#0C0F14',
-    paddingHorizontal: 20,
+    alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: '#fff',
-    textAlign: 'center',
-    marginBottom: 10,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
   subtitle: {
+    fontWeight: 'bold',
     fontSize: 16,
-    color: '#bbb',
-    textAlign: 'center',
+    color: '#52555A',
     marginBottom: 20,
   },
   input: {
-    backgroundColor: '#1E1E1E',
+    borderWidth: 0.5,
+    borderColor: '#252A32',
+    width: '100%',
+    backgroundColor: '#0C0F14',
     borderRadius: 8,
+    padding: 15,
     color: '#fff',
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#333',
+    marginBottom: 15,
   },
-  button: {
+  signUpButton: {
+    width: '100%',
     backgroundColor: '#D17842',
-    paddingVertical: 15,
-    borderRadius: 8,
+    padding: 17,
+    borderRadius: 15,
     alignItems: 'center',
     marginBottom: 15,
   },
@@ -137,11 +170,17 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: 'bold',
   },
-  errorText: {
-    color: '#FF5A5F',
-    textAlign: 'center',
+  footer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  footerText: {
+    color: '#aaa',
+    fontSize: 14,
     marginBottom: 10,
   },
+  login: {
+    color: '#D17842',
+    fontWeight: 'bold',
+  },
 });
-
-export default RegisterScreen;

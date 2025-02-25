@@ -1,152 +1,225 @@
+import { useNavigation } from 'expo-router';
 import React, { useState } from 'react';
-import { Image, View, Text, TextInput, TouchableOpacity, StyleSheet, Alert } from 'react-native';
-import { useNavigation } from '@react-navigation/native';
+import {
+  View,
+  Text,
+  TextInput,
+  StyleSheet,
+  Image,
+  TouchableOpacity,
+  Alert,
+} from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+const api = `http://192.168.2.6:3000/users`;
 
-const SignInScreen = () => {
+const Login = () => {
   const navigation = useNavigation();
+  const [passwordVisible, setPasswordVisible] = useState(false);
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const [error, setError] = useState('');
+  const [error, setError] = useState(''); 
 
-  const handleSignIn = () => {
-    if (email === '' || password === '') {
-      setError('Please enter your email and password.');
-    } else if (password !== '123456') {
-      setError('Password is not correct. Try Again!');
-    } else {
-      setError('');
-      Alert.alert('Success', 'Logged in successfully!');
-    }
+  const handleLogin = () => {
+    fetch(`${api}?email=${email}`)
+      .then((res) => res.json())
+      .then(async (users) => {
+        if (users.length > 0) {
+          const user = users[0];
+          if (user.password === password) {
+            // Lưu thông tin người dùng vào AsyncStorage
+            await AsyncStorage.setItem('user', JSON.stringify(user));
+  
+            Alert.alert('Đăng nhập thành công');
+            if (user.role === 'admin') {
+              navigation.navigate('Admin');
+            } else {
+              navigation.navigate('Main');
+            }
+          } else {
+            setError('Sai mật khẩu');
+          }
+        } else {
+          setError('Tài khoản không tồn tại');
+        }
+      })
+      .catch((error) => {
+        Alert.alert('Lỗi kết nối', 'Không thể kết nối tới server.');
+        console.error(error);
+      });
+  };
+  
+
+  
+
+  const togglePasswordVisibility = () => {
+    setPasswordVisible(!passwordVisible); // Chuyển đổi giữa trạng thái ẩn và hiện mật khẩu
   };
 
   return (
     <View style={styles.container}>
-      <Image style={styles.logo} source={require('../assets/images/Group72.png')} />
-      <Text style={styles.title}>Welcome to Lungo !!</Text>
-      <Text style={styles.subtitle}>Login to Continue</Text>
-
-      <TextInput
-        style={styles.input}
-        placeholder="Email"
-        placeholderTextColor="#aaa"
-        keyboardType="email-address"
-        value={email}
-        onChangeText={setEmail}
+      {/* Logo */}
+      <Image
+        source={require('../assets/images/Group 72.png')}
+        style={styles.logo}
       />
 
+      {/* Welcome Text */}
+      <Text style={styles.title}>Welcome to Longoo</Text>
+      <Text style={styles.subtitle}>Login to Continue</Text>
+
+      {/* Input Fields */}
+      <TextInput
+        placeholder="Email"
+        placeholderTextColor="#ccc"
+        style={styles.input}
+        value={email}
+        onChangeText={setEmail}
+        keyboardType="email-address"
+      />
+
+      {/* Password Input with Eye Icon */}
       <View style={styles.passwordContainer}>
         <TextInput
-          style={[styles.input, { flex: 1 }]}
           placeholder="Password"
-          placeholderTextColor="#aaa"
-          secureTextEntry
+          placeholderTextColor="#ccc"
+          style={styles.input}
           value={password}
           onChangeText={setPassword}
+          secureTextEntry={!passwordVisible} // Điều chỉnh secureTextEntry dựa trên passwordVisible
         />
+        <TouchableOpacity onPress={togglePasswordVisibility} style={styles.eyeIcon}>
+          {/* <Icon name={passwordVisible ? 'eye-slash' : 'eye'} size={20} color="#ccc" /> */}
+        </TouchableOpacity>
       </View>
-
-      {error ? <Text style={styles.errorText}>{error}</Text> : null}
-
-      <TouchableOpacity style={styles.button} onPress={handleSignIn}>
+      {error ? <Text style={styles.error}>{error}</Text> : null}
+      {/* Buttons */}
+      <TouchableOpacity style={styles.signInButton} onPress={handleLogin} >
         <Text style={styles.buttonText}>Sign In</Text>
       </TouchableOpacity>
 
-      <TouchableOpacity style={styles.googleButton} onPress={()=> navigation.navigate('Trangchu')}>
-        <View style={{flexDirection:'row',alignItems:'center'}}>
+      <TouchableOpacity style={styles.googleButton}>
         <Image
-        style={{marginRight:10}}
-        source={require('../assets/images/🦆 icon _google_.png')}/>
-        <Text style={styles.googleButtonText}>Sign in with Google</Text>
-        </View>
+          source={require('../assets/images/image.png')}
+          style={styles.googleImage}
+        />
+        <Text style={styles.buttonText}>Sign in with Google</Text>
       </TouchableOpacity>
 
-      <View style={{ marginTop: 20, alignItems: 'center' }}>
-        <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-          <Text style={{ color: '#fff' }}>Don’t have an account? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('Register')}>
-            <Text style={{ color: '#D17842', fontWeight: 'bold' }}>Register</Text>
-          </TouchableOpacity>
-        </View>
-        <View style={{ flexDirection: 'row', alignItems: 'center', marginTop: 10 }}>
-          <Text style={{ color: '#fff' }}>Forgot Password? </Text>
-          <TouchableOpacity onPress={() => navigation.navigate('ResetPassword')}>
-            <Text style={{ color: '#D17842', fontWeight: 'bold' }}>Reset</Text>
-          </TouchableOpacity>
-        </View>
+      {/* Register and Forgot Password */}
+      <View style={styles.footer}>
+        <Text style={styles.footerText}>
+          Don't have an account?{' '}
+          <Text style={styles.register} onPress={() =>navigation.navigate('Register')}>
+            Click Register
+          </Text>
+        </Text>
+
+        <Text style={styles.footerText}>
+          Forgot Password?{' '}
+          <Text style={styles.reset} onPress={() => alert('Go to Reset')}>
+            Click Reset
+          </Text>
+        </Text>
       </View>
     </View>
   );
 };
 
+export default Login;
+
 const styles = StyleSheet.create({
-  logo: {
-    alignSelf: 'center',
-    width: 200,
-    height: 200,
-    marginBottom: 20,
-  },
   container: {
     flex: 1,
     backgroundColor: '#0C0F14',
-    paddingHorizontal: 20,
+    alignItems: 'center',
     justifyContent: 'center',
+    paddingHorizontal: 20,
+  },
+  error: {
+    color: 'red',
+    marginBottom: 10,
+    textAlign: 'left',
+  },
+  logo: {
+    width: 120,
+    height: 120,
+    marginBottom: 20,
   },
   title: {
     fontSize: 24,
-    fontWeight: 'bold',
     color: '#fff',
-    textAlign: 'center',
-    marginBottom: 10,
+    fontWeight: 'bold',
+    marginBottom: 5,
   },
   subtitle: {
     fontSize: 16,
-    color: '#bbb',
-    textAlign: 'center',
+    color: '#aaa',
     marginBottom: 20,
   },
   input: {
-    backgroundColor: '#1E1E1E',
+    borderWidth: 0.5,
+    borderColor: '#52555A',
+    width: '100%',
+    backgroundColor: '#0C0F14',
     borderRadius: 8,
+    padding: 12,
     color: '#fff',
-    paddingHorizontal: 15,
-    paddingVertical: 12,
-    marginBottom: 10,
-    borderWidth: 1,
-    borderColor: '#333',
+    marginBottom: 15,
   },
   passwordContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginBottom: 10,
+    width: '100%',
+    position: 'relative',
   },
-  button: {
+  eyeIcon: {
+    position: 'absolute',
+    top: 12,
+    right: 15,
+    zIndex: 1,
+  },
+  signInButton: {
+    width: '100%',
     backgroundColor: '#D17842',
-    paddingVertical: 15,
+    padding: 17,
     borderRadius: 8,
     alignItems: 'center',
     marginBottom: 15,
   },
-  buttonText: {
-    color: '#fff',
-    fontSize: 16,
-    fontWeight: 'bold',
-  },
   googleButton: {
-    backgroundColor: '#FFF',
-    paddingVertical: 15,
+    flexDirection: 'row', // Sắp xếp ngang
+    alignItems: 'center', // Căn giữa theo trục dọc
+    width: '100%',
+    height: 50,
+    justifyContent: 'center',
+    borderWidth: 1,
+    borderColor: '#ccc',
     borderRadius: 8,
-    alignItems: 'center',
+    backgroundColor: '#f5f5f5',
   },
-  googleButtonText: {
-    color: '#121212',
+  googleImage: {
+    width: 30,
+    height: 30,
+    marginRight: 10, // Khoảng cách giữa hình ảnh và text
+  },
+  buttonText: {
+    color: '#0C0F14',
     fontSize: 16,
     fontWeight: 'bold',
   },
-  errorText: {
-    color: '#FF5A5F',
-    textAlign: 'center',
+  footer: {
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  footerText: {
+    color: '#aaa',
+    fontSize: 14,
     marginBottom: 10,
   },
+  register: {
+    color: '#D17842',
+    fontWeight: 'bold',
+  },
+  reset: {
+    color: '#D17842',
+    fontWeight: 'bold',
+  },
 });
-
-export default SignInScreen;

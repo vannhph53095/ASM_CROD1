@@ -1,45 +1,65 @@
-import React, { useEffect } from 'react';
-import { View, Text, Image, StyleSheet } from 'react-native';
-import { useRouter } from 'expo-router';
-
-const IndexScreen = () => {
-  const router = useRouter();
-
-  useEffect(() => {
-    // Sau 2 giây, điều hướng đến màn hình login
-    setTimeout(() => {
-      router.push('/Login');
-    }, 2000);
-  }, []);
-
-  return (
-    <View style={styles.container}>
-      <Image 
-        source={require('../assets/images/Group72.png')}
-
-        style={styles.image}
-      />
-      
-    </View>
-  );
+import {NavigationContainer} from '@react-navigation/native';
+import { createNativeStackNavigator } from '@react-navigation/native-stack';
+import Login from './login';
+import Main from './mainScreen'
+import Detail from './detailScreen'
+import Register from './register'
+import Home from './home'
+import Favourite from './favourite'
+import Setting from './setting';
+import Admin from './AdminScreen';
+import Cart from './CartScreen';
+import { CartProvider } from './CartContext';
+import personDetail from './personDetail'
+export interface Product {
+  id: string;
+  name: string;
+  description: string;
+  price: number;
+  subtitle: string;
+  image: string;
+  rating: number;
+  reviews: number;
+  sizes?: { size: string; price: number }[];
+  weights?: { weight: string; price: number }[];
+  tags: string[];
+  roastType: string;
+  type: 'drink' | 'bean';
+  favorite?: boolean; // Thêm trường favorite
+}
+export type RootStackParamList = {
+  Cart:undefined;
+  Login: undefined;
+  Main: undefined;
+  Detail: { products: Product }; // Thêm tham số products
+  Register: undefined;
+  Home: undefined;
+  Favourite: { products: Product }; // Thêm tham số products
+  Setting: undefined;
+  Admin: undefined;
+  personDetail:undefined;
+};
+const Stack = createNativeStackNavigator()
+const Index = () => {
+    
+    return (
+      <CartProvider>
+    <Stack.Navigator initialRouteName='Login' screenOptions={{headerShown: false}}>
+        <Stack.Screen name="Login" component={Login} />
+        <Stack.Screen name="Main" component={Main} />
+        <Stack.Screen name="Detail" component={Detail}/>
+        <Stack.Screen name="Register" component={Register}/>
+        <Stack.Screen name="Home" component={Home}/>
+        <Stack.Screen name='Favourite' component={Favourite}/>
+        <Stack.Screen name='Setting' component={Setting}/>
+        <Stack.Screen name='Admin' component={Admin}/>
+        <Stack.Screen name='Cart' component={Cart}/>
+        <Stack.Screen name="personDetail" component={personDetail}/>
+      </Stack.Navigator>
+    </CartProvider>
+    )
+   
 };
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#0C0F14', // Màu nền đen
-    justifyContent: 'center', // Căn giữa theo chiều dọc
-    alignItems: 'center', // Căn giữa theo chiều ngang
-  },
-  image: {
-    width: 200, // Đặt chiều rộng của ảnh
-    height: 200, // Đặt chiều cao của ảnh
-    marginBottom: 20, // Khoảng cách dưới ảnh
-  },
-  text: {
-    color: 'white', // Màu chữ trắng
-    fontSize: 20,
-  },
-});
+export default Index;
 
-export default IndexScreen;

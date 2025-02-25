@@ -1,0 +1,370 @@
+{
+  "users": [
+    {
+      "id": "1",
+      "username": "admin",
+      "email": "admin@gmail.com",
+      "password": "123456",
+      "role": "admin"
+    },
+    {
+      "id": "e240",
+      "name": "hvan",
+      "email": "vannhph53095@gmail.com",
+      "password": "123",
+      "role": "customer"
+    }
+  ],
+  "products": [
+    {
+      "id": "101",
+      "name": "Cappuccino",
+      "subtitle": "With Steamed Milk",
+      "price": 4.26,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/c/c8/Cappuccino_at_Sightglass_Coffee.jpg",
+      "rating": 4.5,
+      "reviews": 6879,
+      "description": "Cappuccino is a latte made with more foam than steamed milk, often with a sprinkle of cocoa powder or cinnamon on top.",
+      "type": "drink",
+      "sizes": [
+        {
+          "size": "S",
+          "price": 4.26
+        },
+        {
+          "size": "M",
+          "price": 4.86
+        },
+        {
+          "size": "L",
+          "price": 5.56
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Milk"
+      ],
+      "roastType": "Medium Roasted",
+      "weights": [],
+      "favorite": true
+    },
+    {
+      "id": "102",
+      "name": "Arabica Coffee Beans",
+      "subtitle": "Premium Quality",
+      "price": 5,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSWVZfrhQaSUZspFtD7YDKX-EogATo26Nped2_T3AbxoNldfbxm6L9c09gGrtU6L6UinSg&usqp=CAU",
+      "rating": 4.8,
+      "reviews": 1234,
+      "description": "High-quality Arabica coffee beans, perfect for brewing at home.",
+      "type": "bean",
+      "weights": [
+        {
+          "weight": "250g",
+          "price": 5
+        },
+        {
+          "weight": "500g",
+          "price": 5.5
+        },
+        {
+          "weight": "1kg",
+          "price": 6
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Beans"
+      ],
+      "roastType": "Dark Roasted",
+      "sizes": [],
+      "favorite": false
+    },
+    {
+      "id": "103",
+      "name": "Latte",
+      "subtitle": "Smooth and Creamy",
+      "price": 4.5,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/9/9f/Latte_at_Doppio_Ristretto_Chiang_Mai_01.jpg",
+      "rating": 4.6,
+      "reviews": 5432,
+      "description": "A latte is a coffee drink made with espresso and steamed milk.",
+      "type": "drink",
+      "sizes": [
+        {
+          "size": "S",
+          "price": 4.5
+        },
+        {
+          "size": "M",
+          "price": 5
+        },
+        {
+          "size": "L",
+          "price": 5.5
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Milk"
+      ],
+      "roastType": "Medium Roasted",
+      "weights": [],
+      "favorite": false
+    },
+    {
+      "id": "104",
+      "name": "Espresso",
+      "subtitle": "Strong and Bold",
+      "price": 3.5,
+      "image": "data:image/jpeg;base64,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",
+      "rating": 4.7,
+      "reviews": 4321,
+      "description": "Espresso is a concentrated form of coffee served in small, strong shots.",
+      "type": "drink",
+      "sizes": [
+        {
+          "size": "S",
+          "price": 3.5
+        },
+        {
+          "size": "M",
+          "price": 4
+        },
+        {
+          "size": "L",
+          "price": 4.5
+        }
+      ],
+      "tags": [
+        "Coffee"
+      ],
+      "roastType": "Dark Roasted",
+      "weights": [],
+      "favorite": false
+    },
+    {
+      "id": "105",
+      "name": "Mocha",
+      "subtitle": "Chocolatey Delight",
+      "price": 5,
+      "image": "https://upload.wikimedia.org/wikipedia/commons/7/7e/Mocha_coffee.jpg",
+      "rating": 4.4,
+      "reviews": 3210,
+      "description": "A mocha is a chocolate-flavored variant of a latte.",
+      "type": "drink",
+      "sizes": [
+        {
+          "size": "S",
+          "price": 5
+        },
+        {
+          "size": "M",
+          "price": 5.5
+        },
+        {
+          "size": "L",
+          "price": 6
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Chocolate"
+      ],
+      "roastType": "Medium Roasted",
+      "weights": [],
+      "favorite": false
+    },
+    {
+      "id": "106",
+      "name": "Americano",
+      "subtitle": "Classic and Simple",
+      "price": 3,
+      "image": "data:image/jpeg;base64,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",
+      "rating": 4.3,
+      "reviews": 2109,
+      "description": "An Americano is an espresso diluted with hot water.",
+      "type": "drink",
+      "sizes": [
+        {
+          "size": "S",
+          "price": 3
+        },
+        {
+          "size": "M",
+          "price": 3.5
+        },
+        {
+          "size": "L",
+          "price": 4
+        }
+      ],
+      "tags": [
+        "Coffee"
+      ],
+      "roastType": "Light Roasted",
+      "weights": [],
+      "favorite": false
+    },
+    {
+      "id": "107",
+      "name": "Robusta Coffee Beans",
+      "subtitle": "Strong and Bitter",
+      "price": 4,
+      "image": "https://bmgroup.asia/wp-content/uploads/2022/10/robusta.png",
+      "rating": 4.2,
+      "reviews": 1098,
+      "description": "Robusta coffee beans are known for their strong, bitter flavor.",
+      "type": "bean",
+      "weights": [
+        {
+          "weight": "250g",
+          "price": 4
+        },
+        {
+          "weight": "500g",
+          "price": 4.5
+        },
+        {
+          "weight": "1kg",
+          "price": 5
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Beans"
+      ],
+      "roastType": "Dark Roasted",
+      "sizes": [],
+      "favorite": false
+    },
+    {
+      "id": "108",
+      "name": "Decaf Coffee Beans",
+      "subtitle": "Caffeine-Free",
+      "price": 6,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIsM7neu-H88LgPy5SOG7bXC-CSmSj05cw0w&s",
+      "rating": 4.1,
+      "reviews": 987,
+      "description": "Decaf coffee beans are perfect for those who want to enjoy coffee without caffeine.",
+      "type": "bean",
+      "weights": [
+        {
+          "weight": "250g",
+          "price": 6
+        },
+        {
+          "weight": "500g",
+          "price": 6.5
+        },
+        {
+          "weight": "1kg",
+          "price": 7
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Beans"
+      ],
+      "roastType": "Medium Roasted",
+      "sizes": [],
+      "favorite": false
+    },
+    {
+      "id": "109",
+      "name": "Colombian Coffee Beans",
+      "subtitle": "Rich and Aromatic",
+      "price": 7,
+      "image": "https://i0.wp.com/www.windandfirecoffee.com/wp-content/uploads/2020/01/columbiacoffee.jpg?fit=748%2C530&ssl=1",
+      "rating": 4.9,
+      "reviews": 876,
+      "description": "Colombian coffee beans are known for their rich flavor and aromatic profile.",
+      "type": "bean",
+      "weights": [
+        {
+          "weight": "250g",
+          "price": 7
+        },
+        {
+          "weight": "500g",
+          "price": 7.5
+        },
+        {
+          "weight": "1kg",
+          "price": 8
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Beans"
+      ],
+      "roastType": "Medium Roasted",
+      "sizes": [],
+      "favorite": false
+    },
+    {
+      "id": "110",
+      "name": "Ethiopian Coffee Beans",
+      "subtitle": "Fruity and Floral",
+      "price": 8,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQN_yJ3fFDfBLpLu2elg-LjDHbps1Pfz3zcIQ&s",
+      "rating": 4.8,
+      "reviews": 765,
+      "description": "Ethiopian coffee beans are known for their fruity and floral notes.",
+      "type": "bean",
+      "weights": [
+        {
+          "weight": "250g",
+          "price": 8
+        },
+        {
+          "weight": "500g",
+          "price": 8.5
+        },
+        {
+          "weight": "1kg",
+          "price": 9
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Beans"
+      ],
+      "roastType": "Light Roasted",
+      "sizes": [],
+      "favorite": false
+    },
+    {
+      "id": "111",
+      "name": "Brazilian Coffee Beans",
+      "subtitle": "Nutty and Sweet",
+      "price": 6.5,
+      "image": "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSIsM7neu-H88LgPy5SOG7bXC-CSmSj05cw0w&s",
+      "rating": 4.7,
+      "reviews": 654,
+      "description": "Brazilian coffee beans are known for their nutty and sweet flavor.",
+      "type": "bean",
+      "weights": [
+        {
+          "weight": "250g",
+          "price": 6.5
+        },
+        {
+          "weight": "500g",
+          "price": 7
+        },
+        {
+          "weight": "1kg",
+          "price": 7.5
+        }
+      ],
+      "tags": [
+        "Coffee",
+        "Beans"
+      ],
+      "roastType": "Medium Roasted",
+      "sizes": [],
+      "favorite": false
+    }
+  ]
+}
